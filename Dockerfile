@@ -1,11 +1,13 @@
-FROM php:8.2-apache
+FROM node:20-alpine
 
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+WORKDIR /app
 
-RUN a2dismod mpm_event && a2enmod mpm_prefork
+COPY package*.json ./
 
-COPY . /var/www/html/
+RUN npm install
 
-RUN chown -R www-data:www-data /var/www/html
+COPY . .
 
-EXPOSE 80
+EXPOSE 3000
+
+CMD ["npm", "start"]
