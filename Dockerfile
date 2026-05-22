@@ -1,11 +1,11 @@
- # Dockerfile - Despliegue del proyecto PHP en Railway
-  FROM php:8.2-apache
+FROM php:8.2-apache
 
-  # Extensión PDO para conectarse a MySQL
-  RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
-  # Copiar el proyecto al directorio que sirve Apache
-  COPY . /var/www/html/
+RUN a2dismod mpm_event && a2enmod mpm_prefork
 
-  # Apache escucha en el puerto 80
-  EXPOSE 80
+COPY . /var/www/html/
+
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
