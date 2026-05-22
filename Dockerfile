@@ -1,10 +1,11 @@
   # Dockerfile - Despliegue del proyecto PHP en Railway
   FROM php:8.2-apache
 
-  # Forzar que solo el MPM prefork esté activo (mod_php lo requiere)
-  RUN a2dismod mpm_event 2>/dev/null; \
-      a2dismod mpm_worker 2>/dev/null; \
-      a2enmod mpm_prefork
+  # Forzar SOLO mpm_prefork: borrar todos los MPMs habilitados y dejar solo prefork
+  RUN rm -f /etc/apache2/mods-enabled/mpm_*.conf \
+            /etc/apache2/mods-enabled/mpm_*.load \
+   && ln -s /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf \
+   && ln -s /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load
 
   # Extensión PDO para conectarse a MySQL
   RUN docker-php-ext-install pdo_mysql
