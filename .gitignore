@@ -1,0 +1,11 @@
+# Claves y secretos locales - NUNCA subir a Git
+config.local.php
+db.local.php
+.env
+
+# Dependencias
+/vendor/
+
+# Sistema
+.DS_Store
+Thumbs.db
